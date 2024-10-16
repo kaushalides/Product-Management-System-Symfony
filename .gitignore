@@ -23,3 +23,23 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+----
+# Ignore the Symfony cache
+/var/*
+/var/cache/*
+/var/logs/*
+/var/sessions/*
+/var/tmp/*
+
+# Ignore the vendor directory
+/vendor/
+
+# Ignore environment variables
+/.env
+
+# Ignore IDE and OS-specific files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
