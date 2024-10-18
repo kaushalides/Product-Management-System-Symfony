@@ -66,7 +66,7 @@ Follow these steps to set up and run the application locally:
    cd product-management
    
 2. Install dependencies:
-   composer install
+composer install
 
    
 3. Set up your database:
