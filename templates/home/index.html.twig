@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<h1>Assignment Overview</h1><br/>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">GUIDELINES</h5>
+						<p class="card-text">As part of this technical interview, we would like you to demonstrate your skills with
+																																																	Symfony version 7 by creating a web application that manages a list of products. Your task is
+																																																	to build a CRUD (Create, Read, Update, Delete) application with the following
+																																																	functionalities:.</p>
+						<ol>
+							<li>Create a Product Table: Set up a database table for products with the following
+																																								fields:</li>
+							<ul>
+								<li>ID (auto-incrementing)</li>
+								<li>Name (string)</li>
+								<li>Description (text)</li>
+								<li>Price (decimal)</li>
+								<li>Stock Quantity (integer)</li>
+								<li>Created Datetime (datetime)</li>
+
+
+							</ul>
+						</li>
+						<li>Display Products: Create a page that displays a list of products from the database in a
+																												table format. Datetime column should be shown in Singapore timezone.</li>
+						<li>
+							Sorting: Implement sorting functionality for the table columns (Name, Price, Stock
+																												Quantity. Created Datetime).</li>
+						<li>Searching: Add filtering options such as filtering by price range, stock quantity, or
+																												the date the product was added.</li>
+						<li>
+							Pagination: Implement pagination for the product list to handle large datasets.</li>
+						<li>Import/Export: Provide functionality to import product data from a CSV file and
+																												export the current list of products to a CSV file.</li>
+						<li>
+							Add/Edit/Delete: Implement functionality to add new products, edit existing
+																												products, and delete products from the list.</li>
+						<li>Error Handling: Enhance error handling to display user-friendly error messages and
+																												log errors for debugging purposes.</li>
+						<li>Performance Optimization: Optimize database queries and application performance,
+																												especially for large datasets.</li>
+						<li>Responsive Design: Ensure the application is mobile-friendly and responsive across
+																												different screen sizes.</li>
+						<li>Data Validation: Implement thorough server-side validation for all product fields to
+																												ensure data integrity.</li>
+					</ol>
+
+					<p>Please use the Symfony framework to accomplish this task and ensure the following:
+					</p>
+					<ul>
+						<li>
+							Use Symfony 7 and adhere to best practices for project structure and coding standards.</li>
+						<li>
+							Utilize Doctrine ORM for database interactions.</li>
+						<li>
+							Create forms for adding and editing products using Symfony Form components.</li>
+						<li>
+							Implement necessary validation for the product fields.</li>
+						<li>
+							Use Twig templates for rendering views.</li>
+						<li>
+							Ensure the application is secure and handles errors gracefully.</li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>{% endblock %}

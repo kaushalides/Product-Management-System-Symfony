@@ -6,7 +6,7 @@
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
@@ -14,12 +14,47 @@
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
-			{% block importmap %}
-				{{ importmap('app') }}
-			{% endblock %}
 		{% endblock %}
 	</head>
 	<body>
-		{% block body %}{% endblock %}
-	</body>
-</html>
+		<div class="container-fluid">
+			<div class="row flex-nowrap">
+				<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="background-color: #abb8c3">
+					<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+						<a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-decoration-none" style="color: #dd3333">
+							<b>
+								<span class="fs-5 d-none d-sm-inline">ANT<i>labs</i>
+								</span>
+							</b>
+						</a>
+						<ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
+							<li class="nav-item w-100">
+								<a href="{{ path('app_home') }}" class="nav-link align-middle px-0 {% if app.request.get('_route') == 'app_home' %}active{% endif %}">
+									<i class="bi bi-house"></i>
+									<span class="ms-1 d-none d-sm-inline">Home</span>
+								</a>
+							</li>
+							<li class="nav-item w-100">
+								<a href="{{ path('app_product_new') }}" class="nav-link px-0 align-middle {% if app.request.get('_route') == 'app_product_new' %}active{% endif %}">
+									<i class="bi bi-plus-square"></i>
+									<span class="ms-1 d-none d-sm-inline">Add New Product</span>
+								</a>
+							</li>
+							<li class="nav-item w-100">
+								<a href="{{ path('app_product_index') }}" class="nav-link px-0 align-middle {% if app.request.get('_route') == 'app_product_index' %}active{% endif %}">
+									<i class="bi bi-table"></i>
+									<span class="ms-1 d-none d-sm-inline">View Products</span>
+								</a>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+
+				{# Main Content #}
+				<div class="col py-3"> {% block body %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>
