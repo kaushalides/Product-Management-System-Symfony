@@ -19,8 +19,8 @@
 								<th>Name</th>
 								<th>Description</th>
 								<th>Price</th>
-								<th>StockQuantity</th>
-								<th>CreatedDatetime</th>
+								<th>Stock Quantity</th>
+								<th>Created Datetime</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
@@ -46,6 +46,34 @@
 						</tbody>
 					</table>
 				</div>
+
+				<div class="d-flex justify-content-between align-items-center mt-3">
+					<div>
+						<form method="get" class="form-inline">
+							<label for="limit" class="mr-2">Show</label>
+							<select name="limit" id="limit" class="form-control mr-2" onchange="this.form.submit()">
+								<option value="10" {% if limit == 10 %} selected {% endif %}>10</option>
+								<option value="50" {% if limit == 50 %} selected {% endif %}>50</option>
+								<option value="100" {% if limit == 100 %} selected {% endif %}>100</option>
+							</select>
+							<label for="limit" class="mr-2">entries</label>
+						</form>
+					</div>
+
+					<div>
+						{% if products.hasPreviousPage %}
+							<a href="{{ path('app_product_index', { page: products.currentPage - 1, limit: limit }) }}" class="btn btn-secondary btn-sm">Previous</a>
+						{% endif %}
+						<span>Page
+							{{ products.currentPage }}
+							of
+							{{ products.nbPages }}</span>
+						{% if products.hasNextPage %}
+							<a href="{{ path('app_product_index', { page: products.currentPage + 1, limit: limit }) }}" class="btn btn-secondary btn-sm">Next</a>
+						{% endif %}
+					</div>
+				</div>
+
 				<a href="{{ path('app_product_new') }}" class="btn btn-primary mt-3" style="background-color: #dd3333; border-color: #dd3333;">Create new</a>
 			</div>
 		</div>

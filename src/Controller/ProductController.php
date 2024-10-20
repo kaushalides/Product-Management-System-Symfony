@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 
 #[Route('/product')]
 final class ProductController extends AbstractController
@@ -20,10 +22,23 @@ final class ProductController extends AbstractController
     ) {}
 
     #[Route('', name: 'app_product_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $limit = $request->query->getInt('limit', 10);
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 10); // Default to 10 per page
+        $page = $request->query->getInt('page', 1); // Default to page 1
+
+        $queryBuilder = $this->productRepository->createQueryBuilder('p');
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage($limit);
+        $pagerfanta->setCurrentPage($page);
+
+
         return $this->render('product/index.html.twig', [
-            'products' => $this->productRepository->findAll(),
+            'products' => $pagerfanta,
+            'limit' => $limit,
         ]);
     }
 
