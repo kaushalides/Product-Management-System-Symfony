@@ -63,7 +63,6 @@ Follow these steps to set up and run the application locally:
 
    ```bash
    git clone <repository-link>
-   cd product-management
    
 2. Install dependencies:
    
