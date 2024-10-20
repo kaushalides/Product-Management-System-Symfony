@@ -26,19 +26,29 @@ final class ProductController extends AbstractController
     {
         $limit = $request->query->getInt('limit', 10);
         $page = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 10); // Default to 10 per page
-        $page = $request->query->getInt('page', 1); // Default to page 1
+        $sortField = $request->query->get('sort', 'id');
+        $sortDirection = $request->query->get('direction', 'asc');
 
-        $queryBuilder = $this->productRepository->createQueryBuilder('p');
+        $allowedSortFields = ['id', 'name', 'description', 'price', 'stockQuantity', 'createdDatetime'];
+        if (!in_array($sortField, $allowedSortFields)) {
+            $sortField = 'id';
+        }
+
+        $sortDirection = strtolower($sortDirection) === 'desc' ? 'DESC' : 'ASC';
+
+        $queryBuilder = $this->productRepository->createQueryBuilder('p')
+            ->orderBy('p.' . $sortField, $sortDirection);
+
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage($limit);
         $pagerfanta->setCurrentPage($page);
 
-
         return $this->render('product/index.html.twig', [
             'products' => $pagerfanta,
             'limit' => $limit,
+            'sortField' => $sortField,
+            'sortDirection' => $sortDirection
         ]);
     }
 

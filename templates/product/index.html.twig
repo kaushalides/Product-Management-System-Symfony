@@ -6,7 +6,6 @@
 {% block body %}
 	<div class="container mt-4">
 		<div class="card">
-
 			<div style="background-color: #dd3333" class="card-header text-white">
 				<h4 class="mb-0">Product index</h4>
 			</div>
@@ -15,12 +14,66 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>Id</th>
-								<th>Name</th>
-								<th>Description</th>
-								<th>Price</th>
-								<th>Stock Quantity</th>
-								<th>Created Datetime</th>
+								<th>
+									<a href="{{ path('app_product_index', { 'sort': 'id', 'direction': sortField == 'id' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
+										Id
+										{% if sortField == 'id' %}
+											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
+										{% else %}
+											<i class="fas fa-sort"></i>
+										{% endif %}
+									</a>
+								</th>
+								<th>
+									<a href="{{ path('app_product_index', { 'sort': 'name', 'direction': sortField == 'name' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
+										Name
+										{% if sortField == 'name' %}
+											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
+										{% else %}
+											<i class="fas fa-sort"></i>
+										{% endif %}
+									</a>
+								</th>
+								<th>
+									<a href="{{ path('app_product_index', { 'sort': 'description', 'direction': sortField == 'description' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
+										Description
+										{% if sortField == 'description' %}
+											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
+										{% else %}
+											<i class="fas fa-sort"></i>
+										{% endif %}
+									</a>
+								</th>
+								<th>
+									<a href="{{ path('app_product_index', { 'sort': 'price', 'direction': sortField == 'price' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
+										Price
+										{% if sortField == 'price' %}
+											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
+										{% else %}
+											<i class="fas fa-sort"></i>
+										{% endif %}
+									</a>
+								</th>
+								<th>
+									<a href="{{ path('app_product_index', { 'sort': 'stockQuantity', 'direction': sortField == 'stockQuantity' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
+										Stock Quantity
+										{% if sortField == 'stockQuantity' %}
+											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
+										{% else %}
+											<i class="fas fa-sort"></i>
+										{% endif %}
+									</a>
+								</th>
+								<th>
+									<a href="{{ path('app_product_index', { 'sort': 'createdDatetime', 'direction': sortField == 'createdDatetime' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
+										Created Datetime
+										{% if sortField == 'createdDatetime' %}
+											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
+										{% else %}
+											<i class="fas fa-sort"></i>
+										{% endif %}
+									</a>
+								</th>
 								<th>Actions</th>
 							</tr>
 						</thead>
@@ -50,6 +103,8 @@
 				<div class="d-flex justify-content-between align-items-center mt-3">
 					<div>
 						<form method="get" class="form-inline">
+							<input type="hidden" name="sort" value="{{ sortField }}">
+							<input type="hidden" name="direction" value="{{ sortDirection }}">
 							<label for="limit" class="mr-2">Show</label>
 							<select name="limit" id="limit" class="form-control mr-2" onchange="this.form.submit()">
 								<option value="10" {% if limit == 10 %} selected {% endif %}>10</option>
@@ -62,14 +117,14 @@
 
 					<div>
 						{% if products.hasPreviousPage %}
-							<a href="{{ path('app_product_index', { page: products.currentPage - 1, limit: limit }) }}" class="btn btn-secondary btn-sm">Previous</a>
+							<a href="{{ path('app_product_index', { page: products.currentPage - 1, limit: limit, sort: sortField, direction: sortDirection }) }}" class="btn btn-secondary btn-sm">Previous</a>
 						{% endif %}
 						<span>Page
 							{{ products.currentPage }}
 							of
 							{{ products.nbPages }}</span>
 						{% if products.hasNextPage %}
-							<a href="{{ path('app_product_index', { page: products.currentPage + 1, limit: limit }) }}" class="btn btn-secondary btn-sm">Next</a>
+							<a href="{{ path('app_product_index', { page: products.currentPage + 1, limit: limit, sort: sortField, direction: sortDirection }) }}" class="btn btn-secondary btn-sm">Next</a>
 						{% endif %}
 					</div>
 				</div>

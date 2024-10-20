@@ -2,3 +2,11 @@
 body {
     background-color: #f0f0f0;
 }
+th a:hover {
+    text-decoration: none;
+    color: #dd3333;
+}
+
+th a i {
+    margin-left: 5px;
+}
