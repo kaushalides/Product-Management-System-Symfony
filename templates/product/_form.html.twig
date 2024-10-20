@@ -24,12 +24,12 @@
 		</div>
 	{% endif %}
 {% endfor %}
-
+<br/>
 <div class="mb-3">
 	<button type="submit" class="btn btn-primary" style="background-color: #dd3333; border-color: #dd3333;">
 		{{ button_label|default('Save') }}
 	</button>
-	<a href="{{ path('app_product_index') }}" class="btn btn-secondary">Cancel</a>
+	<a href="{{ path('app_home') }}" class="btn btn-secondary">Cancel</a>
 </div>
 
 {{ form_end(form) }}
