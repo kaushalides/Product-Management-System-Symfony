@@ -52,7 +52,7 @@ This project is a web application developed using Symfony 7 that manages a list 
 - Twig Templates
 - Bootstrap (for responsive design)
 - PHP
-- MySQL (or your preferred database)
+- MySQL 
 
 ## Installation
 
