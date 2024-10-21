@@ -4,15 +4,19 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
-		<div class="card">
-			<div style="background-color: #dd3333" class="card-header text-white">
-				<h4 class="mb-0">Create New Product</h4>
-			</div>
-			<div class="card-body">
-				{{ include('product/_form.html.twig', {'button_label': 'Create Product'}) }}
-			</div>
+	<div class="container-fluid container-md mt-4">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-8 col-lg-6">
+				<div class="card">
+					<div style="background-color: #dd3333" class="card-header text-white">
+						<h4 class="mb-0">Create New Product</h4>
+					</div>
+					<div class="card-body">
+						{{ include('product/_form.html.twig', {'button_label': 'Create Product'}) }}
+					</div>
 
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}

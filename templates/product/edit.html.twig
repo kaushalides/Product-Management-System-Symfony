@@ -1,13 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Product{% endblock %}
+
+{% block title %}Edit Product
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Product</h1>
-
-    {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_product_index') }}">back to list</a>
-
-    {{ include('product/_delete_form.html.twig') }}
+	<div class="container-fluid container-md mt-4">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-8 col-lg-6">
+				<div class="card">
+					<div style="background-color: #dd3333" class="card-header text-white">
+						<h4 class="mb-0">Edit Product</h4>
+					</div>
+					<div class="card-body">
+						{{ include('product/_form.html.twig', {'button_label': 'Create Product'}) }}
+					</div>
+					<div class="card-footer">
+						<div class="d-flex flex-wrap justify-content-between">
+							<a href="{{ path('app_product_index') }}" class="btn btn-secondary mb-2">Back to list</a>
+							{{ include('product/_delete_form.html.twig') }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -1,42 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product{% endblock %}
+{% block title %}Product
+{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
+	<div class="container-fluid container-md mt-4">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-8 col-lg-6">
+				<div class="card">
+					<div style="background-color: #dd3333" class="card-header text-white">
+						<h4 class="mb-0">Product Detail</h4>
+					</div>
+					<div class="card-body">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ product.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
-            </tr>
-            <tr>
-                <th>StockQuantity</th>
-                <td>{{ product.stockQuantity }}</td>
-            </tr>
-            <tr>
-                <th>CreatedDatetime</th>
-                <td>{{ product.createdDatetime ? product.createdDatetime|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								<strong>Id:</strong>
+								<span>{{ product.id }}</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								<strong>Name:</strong>
+								<span>{{ product.name }}</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								<strong>Description:</strong>
+								<span>{{ product.description }}</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								<strong>Price:</strong>
+								<span>{{ product.price }}</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								<strong>Stock Quantity:</strong>
+								<span>{{ product.stockQuantity }}</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								<strong>Created Datetime:</strong>
+								<span>{{ product.createdDatetime ? product.createdDatetime|date('Y-m-d H:i:s') : '' }}</span>
+							</li>
+						</ul>
+					</div>
+					<div class="card-footer">
+						<div class="d-flex flex-wrap justify-content-between">
+							<a href="{{ path('app_product_index') }}" class="btn btn-secondary mb-2">Back to list</a>
+							<a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-info mb-2">Edit</a>
 
-    <a href="{{ path('app_product_index') }}">back to list</a>
-
-    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
-
-    {{ include('product/_delete_form.html.twig') }}
+							{{ include('product/_delete_form.html.twig') }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
