@@ -32,13 +32,11 @@ final class ProductController extends AbstractController
 
         $filter = new ProductFilter();
 
-        // Handle search - only set if not empty
         $search = trim($request->query->get('search', ''));
         if ($search !== '') {
             $filter->setSearch($search);
         }
 
-        // Handle price fields - convert only if numeric and not empty
         $minPrice = $request->query->get('minPrice');
         if (!empty($minPrice) && is_numeric($minPrice)) {
             $filter->setMinPrice((float)$minPrice);
@@ -49,7 +47,6 @@ final class ProductController extends AbstractController
             $filter->setMaxPrice((float)$maxPrice);
         }
 
-        // Handle stock fields - convert only if numeric and not empty
         $minStock = $request->query->get('minStock');
         if (!empty($minStock) && is_numeric($minStock)) {
             $filter->setMinStock((int)$minStock);
@@ -60,7 +57,6 @@ final class ProductController extends AbstractController
             $filter->setMaxStock((int)$maxStock);
         }
 
-        // Handle date fields - only set if not empty
         $dateFrom = trim($request->query->get('dateFrom', ''));
         if ($dateFrom !== '') {
             $filter->setDateFrom($dateFrom);
@@ -81,7 +77,6 @@ final class ProductController extends AbstractController
         $queryBuilder = $this->productRepository->createQueryBuilder('p')
             ->orderBy('p.' . $sortField, $sortDirection);
 
-        // Apply filters only if they are set
         if ($filter->getSearch() !== null) {
             $searchTerm = trim($filter->getSearch());
             if ($searchTerm !== '') {
@@ -122,7 +117,6 @@ final class ProductController extends AbstractController
                     ->andWhere('p.createdDatetime >= :dateFrom')
                     ->setParameter('dateFrom', $dateFrom);
             } catch (\Exception $e) {
-                // Invalid date format - ignore this filter
             }
         }
 
@@ -133,7 +127,6 @@ final class ProductController extends AbstractController
                     ->andWhere('p.createdDatetime <= :dateTo')
                     ->setParameter('dateTo', $dateTo);
             } catch (\Exception $e) {
-                // Invalid date format - ignore this filter
             }
         }
 
@@ -141,7 +134,6 @@ final class ProductController extends AbstractController
         $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage($limit);
 
-        // Ensure page number is valid
         try {
             $pagerfanta->setCurrentPage($page);
         } catch (\Exception $e) {
