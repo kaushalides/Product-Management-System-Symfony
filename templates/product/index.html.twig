@@ -9,71 +9,93 @@
 			<div style="background-color: #dd3333" class="card-header text-white">
 				<h4 class="mb-0">Product index</h4>
 			</div>
-			<div class="card-body">
-				<div class="table-responsive">
+			<div
+				class="card-body">
+				{# Filter Form #}
+				<div class="card shadow p-3 mb-5 bg-white rounded">
+					<form
+						method="get" id="filter-form" class="row g-3">
+						{# Hidden fields for sorting and pagination #}
+						<input type="hidden" name="sort" value="{{ app.request.query.get('sort', 'id') }}">
+						<input type="hidden" name="direction" value="{{ app.request.query.get('direction', 'ASC') }}">
+						<input type="hidden" name="page" value="{{ app.request.query.get('page', 1) }}">
+						<input
+						type="hidden" name="limit" value="{{ app.request.query.get('limit', 10) }}">
+
+						{# Search field #}
+						<div class="col-md-4">
+							<label for="search" class="form-label">Search</label>
+							<input type="text" class="form-control" id="search" name="search" value="{{ app.request.query.get('search') }}" placeholder="Search by name or description">
+						</div>
+
+						{# Price range #}
+						<div class="col-md-2">
+							<label for="minPrice" class="form-label">Min Price</label>
+							<input type="number" class="form-control" id="minPrice" name="minPrice" value="{{ app.request.query.get('minPrice') }}" step="0.01">
+						</div>
+
+						<div class="col-md-2">
+							<label for="maxPrice" class="form-label">Max Price</label>
+							<input type="number" class="form-control" id="maxPrice" name="maxPrice" value="{{ app.request.query.get('maxPrice') }}" step="0.01">
+						</div>
+
+						{# Stock range #}
+						<div class="col-md-2">
+							<label for="minStock" class="form-label">Min Stock</label>
+							<input type="number" class="form-control" id="minStock" name="minStock" value="{{ app.request.query.get('minStock') }}">
+						</div>
+
+						<div class="col-md-2">
+							<label for="maxStock" class="form-label">Max Stock</label>
+							<input type="number" class="form-control" id="maxStock" name="maxStock" value="{{ app.request.query.get('maxStock') }}">
+						</div>
+
+						{# Date range #}
+						<div class="col-md-3">
+							<label for="dateFrom" class="form-label">Date From</label>
+							<input type="date" class="form-control" id="dateFrom" name="dateFrom" value="{{ app.request.query.get('dateFrom') }}">
+						</div>
+
+						<div class="col-md-3">
+							<label for="dateTo" class="form-label">Date To</label>
+							<input type="date" class="form-control" id="dateTo" name="dateTo" value="{{ app.request.query.get('dateTo') }}">
+						</div>
+
+						{# Filter buttons #}
+						<div class="col-md-6">
+							<label class="form-label">&nbsp;</label>
+							<div>
+								<button type="submit" class="btn btn-primary" style="background-color: #dd3333; border-color: #dd3333;">
+									<i class="fas fa-search"></i>
+									Apply Filters
+								</button>
+								<a href="{{ path('app_product_index') }}" class="btn btn-secondary">
+									<i class="fas fa-undo"></i>
+									Reset Filters
+								</a>
+							</div>
+						</div>
+					</form>
+				</div>
+
+
+				{# Products Table #}
+				<div class="table-responsive shadow-lg p-3 mb-5 bg-white rounded">
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>
-									<a href="{{ path('app_product_index', { 'sort': 'id', 'direction': sortField == 'id' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
-										Id
-										{% if sortField == 'id' %}
-											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
-										{% else %}
-											<i class="fas fa-sort"></i>
-										{% endif %}
-									</a>
-								</th>
-								<th>
-									<a href="{{ path('app_product_index', { 'sort': 'name', 'direction': sortField == 'name' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
-										Name
-										{% if sortField == 'name' %}
-											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
-										{% else %}
-											<i class="fas fa-sort"></i>
-										{% endif %}
-									</a>
-								</th>
-								<th>
-									<a href="{{ path('app_product_index', { 'sort': 'description', 'direction': sortField == 'description' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
-										Description
-										{% if sortField == 'description' %}
-											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
-										{% else %}
-											<i class="fas fa-sort"></i>
-										{% endif %}
-									</a>
-								</th>
-								<th>
-									<a href="{{ path('app_product_index', { 'sort': 'price', 'direction': sortField == 'price' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
-										Price
-										{% if sortField == 'price' %}
-											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
-										{% else %}
-											<i class="fas fa-sort"></i>
-										{% endif %}
-									</a>
-								</th>
-								<th>
-									<a href="{{ path('app_product_index', { 'sort': 'stockQuantity', 'direction': sortField == 'stockQuantity' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
-										Stock Quantity
-										{% if sortField == 'stockQuantity' %}
-											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
-										{% else %}
-											<i class="fas fa-sort"></i>
-										{% endif %}
-									</a>
-								</th>
-								<th>
-									<a href="{{ path('app_product_index', { 'sort': 'createdDatetime', 'direction': sortField == 'createdDatetime' and sortDirection == 'ASC' ? 'DESC' : 'ASC', 'page': products.currentPage, 'limit': limit }) }}" class="text-dark text-decoration-none">
-										Created Datetime
-										{% if sortField == 'createdDatetime' %}
-											<i class="fas fa-sort-{{ sortDirection == 'ASC' ? 'up' : 'down' }}"></i>
-										{% else %}
-											<i class="fas fa-sort"></i>
-										{% endif %}
-									</a>
-								</th>
+								{% for column in ['id', 'name', 'description', 'price', 'stockQuantity', 'createdDatetime'] %}
+									<th>
+										<a href="{{ path('app_product_index', { 'sort': column, 'direction': app.request.query.get('sort') == column and app.request.query.get('direction') == 'ASC' ? 'DESC' : 'ASC', 'page': app.request.query.get('page', 1), 'limit': app.request.query.get('limit', 10), 'search': app.request.query.get('search'), 'minPrice': app.request.query.get('minPrice'), 'maxPrice': app.request.query.get('maxPrice'), 'minStock': app.request.query.get('minStock'), 'maxStock': app.request.query.get('maxStock'), 'dateFrom': app.request.query.get('dateFrom'), 'dateTo': app.request.query.get('dateTo') }) }}" class="text-dark text-decoration-none">
+											{{ column|capitalize }}
+											{% if app.request.query.get('sort') == column %}
+												<i class="fas fa-sort-{{ app.request.query.get('direction') == 'ASC' ? 'up' : 'down' }}"></i>
+											{% else %}
+												<i class="fas fa-sort"></i>
+											{% endif %}
+										</a>
+									</th>
+								{% endfor %}
 								<th>Actions</th>
 							</tr>
 						</thead>
@@ -100,37 +122,44 @@
 					</table>
 				</div>
 
+				{# Pagination and Entries per page #}
 				<div class="d-flex justify-content-between align-items-center mt-3">
 					<div>
 						<form method="get" class="form-inline">
-							<input type="hidden" name="sort" value="{{ sortField }}">
-							<input type="hidden" name="direction" value="{{ sortDirection }}">
+							{% for key, value in app.request.query.all %}
+								{% if key != 'limit' %}
+									<input type="hidden" name="{{ key }}" value="{{ value }}">
+								{% endif %}
+							{% endfor %}
 							<label for="limit" class="mr-2">Show</label>
 							<select name="limit" id="limit" class="form-control mr-2" onchange="this.form.submit()">
-								<option value="10" {% if limit == 10 %} selected {% endif %}>10</option>
-								<option value="50" {% if limit == 50 %} selected {% endif %}>50</option>
-								<option value="100" {% if limit == 100 %} selected {% endif %}>100</option>
-							</select>
-							<label for="limit" class="mr-2">entries</label>
-						</form>
-					</div>
-
-					<div>
-						{% if products.hasPreviousPage %}
-							<a href="{{ path('app_product_index', { page: products.currentPage - 1, limit: limit, sort: sortField, direction: sortDirection }) }}" class="btn btn-secondary btn-sm">Previous</a>
-						{% endif %}
-						<span>Page
-							{{ products.currentPage }}
-							of
-							{{ products.nbPages }}</span>
-						{% if products.hasNextPage %}
-							<a href="{{ path('app_product_index', { page: products.currentPage + 1, limit: limit, sort: sortField, direction: sortDirection }) }}" class="btn btn-secondary btn-sm">Next</a>
-						{% endif %}
-					</div>
+								{% for option in [10, 50, 100] %}
+									<option value="{{ option }}" {% if app.request.query.get('limit') == option %} selected {% endif %}></option>
+									{{ option }}
+								</option>
+							{% endfor %}
+						</select>
+						<label for="limit" class="mr-2">entries</label>
+					</form>
 				</div>
 
-				<a href="{{ path('app_product_new') }}" class="btn btn-primary mt-3" style="background-color: #dd3333; border-color: #dd3333;">Create new</a>
+				<div>
+					{% if products.hasPreviousPage %}
+						<a href="{{ path('app_product_index', app.request.query.all|merge({ 'page': products.currentPage - 1 })) }}" class="btn btn-secondary btn-sm">Previous</a>
+					{% endif %}
+
+					<span>Page
+						{{ products.currentPage }}
+						of
+						{{ products.nbPages }}</span>
+
+					{% if products.hasNextPage %}
+						<a href="{{ path('app_product_index', app.request.query.all|merge({ 'page': products.currentPage + 1 })) }}" class="btn btn-secondary btn-sm">Next</a>
+					{% endif %}
+				</div>
 			</div>
+
+			<a href="{{ path('app_product_new') }}" class="btn btn-primary mt-3" style="background-color: #dd3333; border-color: #dd3333;">Create new</a>
 		</div>
 	</div>
-{% endblock %}
+</div>{% endblock %}

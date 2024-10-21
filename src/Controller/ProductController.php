@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\ProductFilter;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -29,6 +30,47 @@ final class ProductController extends AbstractController
         $sortField = $request->query->get('sort', 'id');
         $sortDirection = $request->query->get('direction', 'asc');
 
+        $filter = new ProductFilter();
+
+        // Handle search - only set if not empty
+        $search = trim($request->query->get('search', ''));
+        if ($search !== '') {
+            $filter->setSearch($search);
+        }
+
+        // Handle price fields - convert only if numeric and not empty
+        $minPrice = $request->query->get('minPrice');
+        if (!empty($minPrice) && is_numeric($minPrice)) {
+            $filter->setMinPrice((float)$minPrice);
+        }
+
+        $maxPrice = $request->query->get('maxPrice');
+        if (!empty($maxPrice) && is_numeric($maxPrice)) {
+            $filter->setMaxPrice((float)$maxPrice);
+        }
+
+        // Handle stock fields - convert only if numeric and not empty
+        $minStock = $request->query->get('minStock');
+        if (!empty($minStock) && is_numeric($minStock)) {
+            $filter->setMinStock((int)$minStock);
+        }
+
+        $maxStock = $request->query->get('maxStock');
+        if (!empty($maxStock) && is_numeric($maxStock)) {
+            $filter->setMaxStock((int)$maxStock);
+        }
+
+        // Handle date fields - only set if not empty
+        $dateFrom = trim($request->query->get('dateFrom', ''));
+        if ($dateFrom !== '') {
+            $filter->setDateFrom($dateFrom);
+        }
+
+        $dateTo = trim($request->query->get('dateTo', ''));
+        if ($dateTo !== '') {
+            $filter->setDateTo($dateTo);
+        }
+
         $allowedSortFields = ['id', 'name', 'description', 'price', 'stockQuantity', 'createdDatetime'];
         if (!in_array($sortField, $allowedSortFields)) {
             $sortField = 'id';
@@ -39,16 +81,79 @@ final class ProductController extends AbstractController
         $queryBuilder = $this->productRepository->createQueryBuilder('p')
             ->orderBy('p.' . $sortField, $sortDirection);
 
+        // Apply filters only if they are set
+        if ($filter->getSearch() !== null) {
+            $searchTerm = trim($filter->getSearch());
+            if ($searchTerm !== '') {
+                $queryBuilder
+                    ->andWhere('p.name LIKE :search OR p.description LIKE :search')
+                    ->setParameter('search', '%' . $searchTerm . '%');
+            }
+        }
+
+        if ($filter->getMinPrice() !== null) {
+            $queryBuilder
+                ->andWhere('p.price >= :minPrice')
+                ->setParameter('minPrice', $filter->getMinPrice());
+        }
+
+        if ($filter->getMaxPrice() !== null) {
+            $queryBuilder
+                ->andWhere('p.price <= :maxPrice')
+                ->setParameter('maxPrice', $filter->getMaxPrice());
+        }
+
+        if ($filter->getMinStock() !== null) {
+            $queryBuilder
+                ->andWhere('p.stockQuantity >= :minStock')
+                ->setParameter('minStock', $filter->getMinStock());
+        }
+
+        if ($filter->getMaxStock() !== null) {
+            $queryBuilder
+                ->andWhere('p.stockQuantity <= :maxStock')
+                ->setParameter('maxStock', $filter->getMaxStock());
+        }
+
+        if ($filter->getDateFrom() !== null) {
+            try {
+                $dateFrom = $filter->getDateFrom() . ' 00:00:00';
+                $queryBuilder
+                    ->andWhere('p.createdDatetime >= :dateFrom')
+                    ->setParameter('dateFrom', $dateFrom);
+            } catch (\Exception $e) {
+                // Invalid date format - ignore this filter
+            }
+        }
+
+        if ($filter->getDateTo() !== null) {
+            try {
+                $dateTo = $filter->getDateTo() . ' 23:59:59';
+                $queryBuilder
+                    ->andWhere('p.createdDatetime <= :dateTo')
+                    ->setParameter('dateTo', $dateTo);
+            } catch (\Exception $e) {
+                // Invalid date format - ignore this filter
+            }
+        }
+
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage($limit);
-        $pagerfanta->setCurrentPage($page);
+
+        // Ensure page number is valid
+        try {
+            $pagerfanta->setCurrentPage($page);
+        } catch (\Exception $e) {
+            $pagerfanta->setCurrentPage(1);
+        }
 
         return $this->render('product/index.html.twig', [
             'products' => $pagerfanta,
             'limit' => $limit,
             'sortField' => $sortField,
-            'sortDirection' => $sortDirection
+            'sortDirection' => $sortDirection,
+            'filter' => $filter
         ]);
     }
 
