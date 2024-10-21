@@ -66,35 +66,39 @@ Follow these steps to set up and run the application locally:
    cd Product-Management-System-Symfony
    
 2. Install dependencies:
-   
-   composer install
 
+      ```bash
+   composer install
    
 3. Set up your database:
 
-    Configure your .env file with your database credentials.
+   Configure your .env file with your database credentials.
    DATABASE_URL="mysql://username:password@127.0.0.1:3306/database_name"
 
 
 5. Create the database:
 
+   ```bash
     php bin/console doctrine:database:create
 
 6. Run migrations:
 
+   ```bash
    php bin/console doctrine:migrations:migrate
 
 7. Install Frontend Dependencies
 
+   ```bash
    npm install
    
 9. Build Assets
 
+    ```bash
    npm run build
 
-10. Run the application:
+10. Run the application:   Start the Symfony server
 
-  Start the Symfony server:
+    ```bash
   symfony serve
 
 11. Access the application:
