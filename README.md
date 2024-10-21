@@ -62,7 +62,8 @@ Follow these steps to set up and run the application locally:
    Make sure you have Composer installed. Then run:
 
    ```bash
-   git clone <repository-link>
+   git clone https://github.com/kaushalides/Product-Management-System-Symfony.git
+   cd Product-Management-System-Symfony
    
 2. Install dependencies:
    
@@ -72,21 +73,31 @@ Follow these steps to set up and run the application locally:
 3. Set up your database:
 
     Configure your .env file with your database credentials.
+   DATABASE_URL="mysql://username:password@127.0.0.1:3306/database_name"
 
-4. Create the database:
+
+5. Create the database:
 
     php bin/console doctrine:database:create
 
-5. Run migrations:
+6. Run migrations:
 
    php bin/console doctrine:migrations:migrate
 
-6. Run the application:
+7. Install Frontend Dependencies
+
+   npm install
+   
+9. Build Assets
+
+   npm run build
+
+10. Run the application:
 
   Start the Symfony server:
   symfony serve
 
-7. Access the application:
+11. Access the application:
 
   Open your web browser and go to http://localhost:8000.
 
